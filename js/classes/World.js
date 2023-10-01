@@ -1,38 +1,67 @@
+import Island from "./Island.js";
+
 class World {
-    constructor() {
-      this.islands = []; // a good place to keep track of your islands
-      this.hookEvents(); // let's kick things of by hooking up events
-    }
-  
-    hookEvents() {
-      // hook events like clicking buttons to a specific function
-    }
-  
-    save() {
-      // save array islands to localstorage as string
-      // loop over all this.islands and save the names
-    }
-  
-    load() {
-      // load islands from localstorage into array
-      // loop over the array and addIslands()
-    }
-  
-    getCoordinates() {
-      // return coordinates within the screen at random, feel free to change it up!
-      let randomSign = Math.random() < 0.5 ? -1 : 1;
-      return {
-        x: ((Math.random() * window.innerWidth) / 2) * randomSign,
-        y: ((Math.random() * window.innerHeight) / 2) * randomSign
-      };
-    }
-  
-    addIsland(island) {
-      // add the islands to the DOM
-    }
-  
-    moveIsland(island) {
-      // this might be a good point to animate the islands with JS Animations API
-    }
+  constructor() {
+    this.islands = [];
+    this.hookEvents();
   }
-  
+
+  hookEvents() {
+    const addButton = document.getElementById("btnAddIsland");
+    addButton.addEventListener("click", () => {
+      const island = new Island(this.getRandomName());
+      this.addIsland(island);
+    });
+
+    const saveButton = document.getElementById("btnSave");
+    saveButton.addEventListener("click", () => {
+      this.save();
+    });
+
+    const loadButton = document.getElementById("btnLoad");
+    loadButton.addEventListener("click", () => {
+      this.load();
+    });
+  }
+
+  save() {
+    // Implement save logic here
+  }
+
+  load() {
+    // Implement load logic here
+  }
+
+  getCoordinates() {
+    let randomSign = Math.random() < 0.5 ? -1 : 1;
+    return {
+      x: ((Math.random() * window.innerWidth) / 2) * randomSign,
+      y: ((Math.random() * window.innerHeight) / 2) * randomSign,
+    };
+  }
+
+  addIsland(island) {
+    const coordinates = this.getCoordinates();
+    island.setPosition(coordinates.x, coordinates.y);
+    this.islands.push(island);
+    island.addToDOM();
+  }
+
+  getRandomName() {
+    const names = [
+      "Palmtree beach",
+      "Sandy beach",
+      "Tropical beach",
+      "Palm beach",
+      "Sunny beach",
+      "Paradise beach",
+      "Sunny island",
+      "Tropical island",
+      "Palm island",
+      "Paradise island",
+    ];
+    return names[Math.floor(Math.random() * names.length)];
+  }
+}
+
+const world = new World();
