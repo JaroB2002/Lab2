@@ -12,7 +12,7 @@ export default class Island {
     setPosition(x, y) {
       this.x = x;
       this.y = y;
-    }
+    }z
   
     addToDOM() {
       const islandElement = document.createElement("div");

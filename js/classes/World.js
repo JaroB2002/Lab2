@@ -33,12 +33,14 @@ class World {
   }
 
   getCoordinates() {
-    let randomSign = Math.random() < 0.5 ? -1 : 1;
+    let randomSignX = Math.random() < 0.5 ? -1 : 1; // Voor x-coördinaat
+    let randomSignY = Math.random() < 0.5 ? -1 : 1; // Voor y-coördinaat
     return {
-      x: ((Math.random() * window.innerWidth) / 2) * randomSign,
-      y: ((Math.random() * window.innerHeight) / 2) * randomSign,
+      x: ((Math.random() * window.innerWidth) / 2) * randomSignX + window.innerWidth / 2,
+      y: ((Math.random() * window.innerHeight) / 2) * randomSignY + window.innerHeight / 2,
     };
   }
+  
 
   addIsland(island) {
     const coordinates = this.getCoordinates();
