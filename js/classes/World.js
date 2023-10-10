@@ -3,6 +3,7 @@ import Island from "./Island.js";
 class World {
   constructor() {
     this.islands = [];
+    this.islandCount = 0;
     this.hookEvents();
   }
 
@@ -25,12 +26,26 @@ class World {
   }
 
   save() {
-    // Implement save logic here
+    const islands = this.islands.map(island => island.toJSON());
+    localStorage.setItem('world', JSON.stringify(islands));
+    localStorage.setItem('islandCount', this.islandCount); // save the counter
+
   }
 
   load() {
-    // Implement load logic here
+    const storedIslands = JSON.parse(localStorage.getItem('world'));
+    if (storedIslands) {
+      this.islands = storedIslands.map(island => {
+        const newIsland = new Island(island.name, island.color);
+        newIsland.setPosition(island.x, island.y);
+        newIsland.addToDOM();
+        return newIsland;
+      });
+    }
+    this.islandCount = Number(localStorage.getItem('islandCount')) || 0; // load the counter
+    this.updateCounterDisplay(); // update the counter display
   }
+
 
   getCoordinates() {
     let randomSignX = Math.random() < 0.5 ? -1 : 1; // Voor x-coördinaat
@@ -47,7 +62,14 @@ class World {
     island.setPosition(coordinates.x, coordinates.y);
     this.islands.push(island);
     island.addToDOM();
-  }
+    this.islandCount++; // increment the counter
+    this.updateCounterDisplay();
+    }
+
+    updateCounterDisplay() {
+      const counterElement = document.getElementById("counter");
+      counterElement.textContent = `Islands added: ${this.islandCount}`;
+    }  
 
   getRandomName() {
     const names = [
